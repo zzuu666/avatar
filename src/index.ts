@@ -2,7 +2,7 @@ import { Init } from './init'
 import { mixins } from './util'
 
 interface Options {
-  el: string | Element,
+  el: string | HTMLElement,
   width: number,
   height: number
 }

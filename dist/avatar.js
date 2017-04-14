@@ -58,8 +58,32 @@ var Init = (function () {
         this.height = option.height;
         this.width = option.width;
         this.radius = this.height / 4;
+        this.fileInput = option.file || null;
+        if (this.fileInput) {
+            initFileInput(this.fileInput, this);
+        }
+        this.imageEl = createImage(this.$el);
+        console.log(this.imageEl);
         this.selectEl = createSelect(this.$el, this.height, this.width);
         bindMoveEvent(this.selectEl, this.radius);
+    };
+    Init.prototype.setImage = function (file) {
+        var self = this;
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            var img = self.imageEl;
+            img.onload = function () {
+                var isVertical = img.height > img.width;
+                if (isVertical) {
+                    img.height = 400;
+                }
+                else {
+                    img.width = 400;
+                }
+            };
+            img.src = this.result;
+        };
     };
     return Init;
 }());
@@ -82,6 +106,11 @@ function createSelect(el, height, width) {
     append(el, html);
     return query('div[data-role="select-visible"]');
 }
+function createImage(el) {
+    var img = new Image();
+    el.appendChild(img);
+    return img;
+}
 function bindMoveEvent(dom, radius) {
     var isCanMove = false;
     var startX;
@@ -103,6 +132,14 @@ function bindMoveEvent(dom, radius) {
         }
     });
 }
+function initFileInput(el, ctx) {
+    el.addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        console.log(typeof file);
+        ctx.setImage(file);
+    });
+}
+//# sourceMappingURL=init.js.map
 
 var Avatar = (function () {
     function Avatar(option) {
@@ -112,8 +149,6 @@ var Avatar = (function () {
     return Avatar;
 }());
 mixins(Avatar, [Init]);
-
-//# sourceMappingURL=index.js.map
 
 return Avatar;
 

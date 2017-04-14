@@ -12,9 +12,9 @@ export function mixins (target: any, mix: any[]) {
 /**
  * Query an element selector if it's not an element already.
  */
-export function query (el: string | Element): Element {
+export function query (el: string | HTMLElement): HTMLElement {
   if (typeof el === 'string') {
-    const selected = document.querySelector(el)
+    const selected: HTMLElement = <HTMLElement> document.querySelector(el)
     if (!selected) {
       return document.createElement('div')
     }
