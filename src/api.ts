@@ -1,4 +1,5 @@
 import { Component } from './types/index'
+import { drawVisibel } from './init'
 /**
  * Mixin the Avatar Api
  * @param Avatar Class
@@ -31,7 +32,7 @@ export function MixinApi (Avatar: Function) {
           setSelectEdge(ava, 0 , top, size, size - top)
         }
         ava.scale = img.naturalHeight / img.height
-        console.log(ava.scale)
+        drawVisibel(ava)
       }
       img.src = this.result
     }
@@ -52,4 +53,12 @@ function setSelectEdge (ava: Component, xf: number, yf: number, xe: number, ye: 
   ava.yend = ye
   ava.xfrom = xf
   ava.yfrom = yf
+  ava.d = Math.min(xe - xf, ye - yf)
+  if (xf) {
+    ava.x = xf
+    ava.y = (ye - yf - ava.d) / 2
+  } else {
+    ava.y = yf
+    ava.x = (xe - xf -ava.d) / 2
+  }
 }

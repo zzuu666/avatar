@@ -14,9 +14,6 @@ export function MixinInit (Avatar: Function) {
     initRootStyle(ava.$el, ava.size)
     ava.image = createImage(ava.$el)
     ava.canvas = createCanvas(ava.size, ava.$el)
-    ava.x = options.size / 4
-    ava.y = options.size / 4
-    ava.d = options.size / 2
     // todo file now just support HTMLInputElement
     ava.file = options.file || null
     if (ava.file) {
@@ -24,7 +21,6 @@ export function MixinInit (Avatar: Function) {
     }
     initEvent(ava)
     ava.previews = options.previews.length ? initPrivew(ava, options.previews) : []
-    drawVisibel(ava)
   }
 }
 
@@ -53,7 +49,7 @@ function initPrivew (ava: Component, arr: Array<PriviweOptions>): Array<Preview>
   return previews
 }
 
-function drawVisibel (ava: Component) {
+export function drawVisibel (ava: Component) {
   let ctx = ava.canvas.getContext('2d')
   let size = ava.size
   let x = ava.x
@@ -120,9 +116,9 @@ function initEvent (ava: Component) {
 
     if (canResize) {
       ava.d = e.offsetY - (ava.y + ava.d / 2 * 1.707) + ava.d
-      if (ava.d > Math.min((ava.xend - ava.xfrom), (ava.yend - ava.yfrom))) {
+      if (ava.d > Math.min((ava.xend - ava.x), (ava.yend - ava.y))) {
         // todo optimize the max ava.d
-        ava.d = Math.min((ava.xend - ava.xfrom), (ava.yend - ava.yfrom))
+        ava.d = Math.min((ava.xend - ava.x), (ava.yend - ava.y))
       }
       drawVisibel(ava)
     } else if (canMove) {

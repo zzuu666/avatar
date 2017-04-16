@@ -81,6 +81,8 @@ var Preview = (function () {
     return Preview;
 }());
 
+//# sourceMappingURL=preview.js.map
+
 function MixinInit(Avatar) {
     Avatar.prototype._init = function (options) {
         var ava = this;
@@ -89,9 +91,6 @@ function MixinInit(Avatar) {
         initRootStyle(ava.$el, ava.size);
         ava.image = createImage(ava.$el);
         ava.canvas = createCanvas(ava.size, ava.$el);
-        ava.x = options.size / 4;
-        ava.y = options.size / 4;
-        ava.d = options.size / 2;
         // todo file now just support HTMLInputElement
         ava.file = options.file || null;
         if (ava.file) {
@@ -99,7 +98,6 @@ function MixinInit(Avatar) {
         }
         initEvent(ava);
         ava.previews = options.previews.length ? initPrivew(ava, options.previews) : [];
-        drawVisibel(ava);
     };
 }
 function initRootStyle(root, size) {
@@ -188,9 +186,9 @@ function initEvent(ava) {
         }
         if (canResize) {
             ava.d = e.offsetY - (ava.y + ava.d / 2 * 1.707) + ava.d;
-            if (ava.d > Math.min((ava.xend - ava.xfrom), (ava.yend - ava.yfrom))) {
+            if (ava.d > Math.min((ava.xend - ava.x), (ava.yend - ava.y))) {
                 // todo optimize the max ava.d
-                ava.d = Math.min((ava.xend - ava.xfrom), (ava.yend - ava.yfrom));
+                ava.d = Math.min((ava.xend - ava.x), (ava.yend - ava.y));
             }
             drawVisibel(ava);
         }
@@ -264,12 +262,7 @@ function notify(ava) {
         ava.previews[i].update();
     }
 }
-//# sourceMappingURL=init.js.map
 
-/**
- * Mixin the Avatar Api
- * @param Avatar Class
- */
 function MixinApi(Avatar) {
     /**
      * set the blob img
@@ -299,7 +292,7 @@ function MixinApi(Avatar) {
                     setSelectEdge(ava, 0, top, size, size - top);
                 }
                 ava.scale = img.naturalHeight / img.height;
-                console.log(ava.scale);
+                drawVisibel(ava);
             };
             img.src = this.result;
         };
@@ -318,6 +311,15 @@ function setSelectEdge(ava, xf, yf, xe, ye) {
     ava.yend = ye;
     ava.xfrom = xf;
     ava.yfrom = yf;
+    ava.d = Math.min(xe - xf, ye - yf);
+    if (xf) {
+        ava.x = xf;
+        ava.y = (ye - yf - ava.d) / 2;
+    }
+    else {
+        ava.y = yf;
+        ava.x = (xe - xf - ava.d) / 2;
+    }
 }
 //# sourceMappingURL=api.js.map
 

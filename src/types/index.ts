@@ -29,7 +29,8 @@ export interface Options {
   height: number,
   file?: HTMLInputElement,
   size: number,
-  previews: Array<PriviweOptions>
+  previews: Array<PriviweOptions>,
+  output: Array<number>
 }
 
 export interface PriviweOptions {
