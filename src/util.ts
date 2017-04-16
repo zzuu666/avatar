@@ -24,6 +24,18 @@ export function query (el: string | HTMLElement): HTMLElement {
   }
 }
 
+export function queryCanvas (el: string | HTMLCanvasElement): HTMLCanvasElement {
+  if (typeof el === 'string') {
+    const selected: HTMLCanvasElement = <HTMLCanvasElement> document.querySelector(el)
+    if (!selected) {
+      console.warn(`The selector ${el} isn't a canvas element`)
+      return document.createElement('canvas')
+    }
+    return selected
+  } else {
+    return el
+  }
+}
 /**
  * Insert a html string after DOM
  */
@@ -50,6 +62,12 @@ export function parseStyle (style: Style): string {
     res += `${key}: ${style[key]};`
   })
   return res
+}
+
+export function absolute (el: HTMLImageElement | HTMLCanvasElement) {
+  el.style.position = 'absolute'
+  el.style.top = '0'
+  el.style.left = '0'
 }
 
 

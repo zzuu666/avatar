@@ -1,22 +1,17 @@
-import { Init } from './init'
-import { mixins } from './util'
+import { Options } from './types/index'
+import { MixinInit } from './init'
+import { MixinApi } from './api'
 
-interface Options {
-  el: string | HTMLElement,
-  width: number,
-  height: number
-}
-
-class Avatar implements Init {
-  private $option: object
-  init: (opt: object) => void
+class Avatar {
+  _init: (opt: object) => void
 
   constructor (option: Options) {
-    this.$option = option
-    this.init(option)
+    this._init(option)
   }
 }
 
-mixins(Avatar, [Init])
+MixinInit(Avatar)
+MixinApi(Avatar)
+
 
 export default Avatar
